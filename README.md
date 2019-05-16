@@ -175,10 +175,10 @@ cd GameEngine/bin
 ./example_autonomy_protocol
 ```
 
-### Tests
+### Unit Tests
 ```bash
 cd build/test
-./EXECUTABLE_OF_CHOICE
+./{$any_unit_test_executable}
 ```
 
 ## TODO
