@@ -101,6 +101,12 @@ cmake ..
 make -j4
 ```
 
+6. Install fftw3
+
+```bash
+ sudo apt-get install libfftw3-dev libfftw3-doc
+```
+
 Here it might complain that it cant find OSQP. You'll have to set the osqp dir environment variable to the path where the osqp-config.cmake resides before you run cmake. This cmake config file should been in ~/osqp/build/. 
 
 ### Clone
