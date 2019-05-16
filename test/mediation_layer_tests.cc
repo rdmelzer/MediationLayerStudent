@@ -28,8 +28,9 @@ void test_TrajectoryWarden() {
 
   { // Test read/write
     TrajectoryWarden warden;
-
-    Trajectory trajectory_write({Eigen::Matrix<double, 11, 1>(1,1,1,1,1,1,1,1,1,1,1)});
+    Eigen::Matrix<double, 11, 1> m;
+    m << 1,1,1,1,1,1,1,1,1,1,1;
+    Trajectory trajectory_write({m});
     assert(true == warden.Register("test"));
     assert(true == warden.Write("test", trajectory_write));
 
@@ -49,7 +50,9 @@ void test_Trajectory() {
 
   { // Test access
     TrajectoryVector3D hist = {};
-    hist.push_back(Eigen::Matrix<double, 11, 1>(1,1,1,2,2,2,3,3,3,0.1,0.2));
+    Eigen::Matrix<double, 11, 1> m1;
+    m1 << 1,1,1,2,2,2,3,3,3,0.1,0.2;
+    hist.push_back(m1);
     Trajectory trajectory(hist);
 
     assert(Eigen::Vector3d(1,1,1).isApprox(trajectory.Position(0)));
@@ -57,14 +60,22 @@ void test_Trajectory() {
     assert(Eigen::Vector3d(3,3,3).isApprox(trajectory.Acceleration(0)));
     assert(0.1 == trajectory.Yaw(0));
     assert(0.2 == trajectory.Time(0));
-    assert((Eigen::Matrix<double, 9, 1>(1,1,1,2,2,2,3,3,3)).isApprox(trajectory.PVA(0)));
-    assert((Eigen::Matrix<double, 11, 1>(1,1,1,2,2,2,3,3,3,0.1,0.2)).isApprox(trajectory.PVAYT(0)));
+
+    Eigen::Matrix<double, 9, 1> m2;
+    m2 << 1,1,1,2,2,2,3,3,3;
+    assert((m2).isApprox(trajectory.PVA(0)));
+    
+    Eigen::Matrix<double, 11, 1> m3;
+    m3 << 1,1,1,2,2,2,3,3,3,0.1,0.2;
+    assert((m3).isApprox(trajectory.PVAYT(0)));
   }
 }
 
 void test_QuadState() {
   { // Trivial
-    QuadState state(Eigen::Matrix<double, 13, 1>(1,1,1,2,2,2,1,0,0,0,1,2,3));
+    Eigen::Matrix<double, 13, 1> m;
+    m << 1,1,1,2,2,2,1,0,0,0,1,2,3;
+    QuadState state(m);
     assert((Eigen::Vector3d(1,1,1)).isApprox(state.Position()));
     assert((Eigen::Vector3d(2,2,2)).isApprox(state.Velocity()));
     assert((Eigen::Vector4d(1,0,0,0)).isApprox(state.Orientation()));
@@ -85,8 +96,9 @@ void test_QuadStateWarden() {
 
   { // Test read/write
     QuadStateWarden warden;
-
-    QuadState state_write({Eigen::Matrix<double, 13, 1>(0,0,0,0,0,0,1,0,0,0,0,0,0)});
+    Eigen::Matrix<double, 13, 1> m;
+    m << 0,0,0,0,0,0,1,0,0,0,0,0,0;
+    QuadState state_write({m});
     assert(true == warden.Register("test"));
     assert(true == warden.Write("test", state_write));
 

@@ -91,13 +91,13 @@ namespace game_engine {
       const double time = flight_chrono_time.count();
   
       // Push an Eigen instance onto the trajectory vector
-      trajectory_vector.push_back(Eigen::Matrix<double, 11, 1>(
-            x,   y,   z,
+      Eigen::Matrix<double, 11, 1> m;
+      m << x,   y,   z,
             vx,  vy,  vz,
             ax,  ay,  az,
             yaw,
-            time
-            ));
+            time;
+      trajectory_vector.push_back(m);
     }
   
     // Construct a trajectory from the trajectory vector

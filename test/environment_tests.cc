@@ -150,12 +150,16 @@ void test_OccupancyGrid2D() {
     const Graph2D graph = occupancy_grid.AsGraph();
 
     {
-      const auto n = std::make_shared<Node2D>(Eigen::Matrix<double, 2, 1>(0,0));
+      Eigen::Matrix<double, 2, 1> m0;
+      m0 << 0,0;
+      const auto n = std::make_shared<Node2D>(m0);
       assert(3 == graph.Edges(n).size());
     }
 
     {
-      const auto n = std::make_shared<Node2D>(Eigen::Matrix<double, 2, 1>(1,1));
+      Eigen::Matrix<double, 2, 1> m1;
+      m1 << 1,1;
+      const auto n = std::make_shared<Node2D>(m1);
       assert(8 == graph.Edges(n).size());
     }
   }

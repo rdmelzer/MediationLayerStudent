@@ -19,17 +19,25 @@ void test_NodeEigen() {
 
 void test_Node2D() {
   { // Check equality
-    const Node2D n1(Eigen::Matrix<double, 2, 1>(1,2));
-    const Node2D n2(Eigen::Matrix<double, 2, 1>(1,2));
-    const Node2D n3(Eigen::Matrix<double, 2, 1>(1,3));
+    Eigen::Matrix<double, 2, 1> m1, m2, m3;
+    m1 << 1,2;
+    m2 << 1,2;
+    m3 << 1,3;
+    const Node2D n1(m1);
+    const Node2D n2(m2);
+    const Node2D n3(m3);
     assert(true == (n1 == n2));
     assert(false == (n1 == n3));
   }
 
   { // Check hash equality
-    const Node2D n1(Eigen::Matrix<double, 2, 1>(1,2));
-    const Node2D n2(Eigen::Matrix<double, 2, 1>(1,2));
-    const Node2D n3(Eigen::Matrix<double, 2, 1>(1.0001,2.0001));
+    Eigen::Matrix<double, 2, 1> m1, m2, m3;
+    m1 << 1,2;
+    m2 << 1,2;
+    m3 << 1.0001,2.0001;
+    const Node2D n1(m1);
+    const Node2D n2(m2);
+    const Node2D n3(m3);
     assert(true == (n1.Hash() == n2.Hash()));
     assert(false == (n1.Hash() == n3.Hash()));
   }
@@ -37,26 +45,38 @@ void test_Node2D() {
 
 void test_Node3D() {
   { // Check equality
-    const Node3D n1(Eigen::Matrix<double, 3, 1>(1,2,1));
-    const Node3D n2(Eigen::Matrix<double, 3, 1>(1,2,1));
-    const Node3D n3(Eigen::Matrix<double, 3, 1>(1,3,1));
+    Eigen::Matrix<double, 3, 1> m1, m2, m3;
+    m1 << 1,2,1;
+    m2 << 1,2,1;
+    m3 << 1,3,1;
+    const Node3D n1(m1);
+    const Node3D n2(m2);
+    const Node3D n3(m3);
     assert(true == (n1 == n2));
     assert(false == (n1 == n3));
   }
 
   { // Check hash equality
-    const Node3D n1(Eigen::Matrix<double, 3, 1>(1,2,1));
-    const Node3D n2(Eigen::Matrix<double, 3, 1>(1,2,1));
-    const Node3D n3(Eigen::Matrix<double, 3, 1>(1.0001,2.0001,1));
-    assert(true == (n1.Hash() == n2.Hash()));
+    Eigen::Matrix<double, 3, 1> m1, m2, m3;
+    m1 << 1,2,1;
+    m2 << 1,2,1;
+    m3 << 1.0001,2.0001,1;
+    const Node3D n1(m1);
+    const Node3D n2(m2);
+    const Node3D n3(m3);assert(true == (n1.Hash() == n2.Hash()));
     assert(false == (n1.Hash() == n3.Hash()));
   }
 }
 
 void test_DirectedEdge2D() {
   { // Construction
-    const auto source = std::make_shared<Node2D>(Eigen::Matrix<double, 2, 1>(1,2));
-    const auto sink = std::make_shared<Node2D>(Eigen::Matrix<double, 2, 1>(2,2));
+    Eigen::Matrix<double, 2, 1> mSource;
+    mSource << 1,2;
+    Eigen::Matrix<double, 2, 1> mSink;
+    mSink << 2,2;
+    
+    const auto source = std::make_shared<Node2D>(mSource);
+    const auto sink = std::make_shared<Node2D>(mSink);
     const double cost = 3.14;
     const DirectedEdge2D edge(source, sink, cost);
     assert(true == (*edge.Source() == *source));
@@ -67,22 +87,34 @@ void test_DirectedEdge2D() {
 
 void test_Graph2D() {
   { // Test graph access
-    const auto n1 = std::make_shared<Node2D>(Eigen::Matrix<double, 2, 1>(1,2));
-    const auto n2 = std::make_shared<Node2D>(Eigen::Matrix<double, 2, 1>(2,2));
-    const auto n3 = std::make_shared<Node2D>(Eigen::Matrix<double, 2, 1>(3,2));
-    const auto n4 = std::make_shared<Node2D>(Eigen::Matrix<double, 2, 1>(2,5));
+    Eigen::Matrix<double, 2, 1> m1, m2, m3, m4, m5, m6;
+    m1 << 1,2;
+    m2 << 2,2;
+    m3 << 3,2;
+    m4 << 2,5;
+    m5 << 1,2;
+    m6 << 0,0;
+
+    const auto n1 = std::make_shared<Node2D>(m1);
+    const auto n2 = std::make_shared<Node2D>(m2);
+    const auto n3 = std::make_shared<Node2D>(m3);
+    const auto n4 = std::make_shared<Node2D>(m4);
     const DirectedEdge2D edge1(n1,n2), edge2(n1,n3), edge3(n3,n4), edge4(n2,n4);
     const Graph2D graph({edge1, edge2, edge3, edge4});
 
-    const auto n5 = std::make_shared<Node2D>(Eigen::Matrix<double, 2, 1>(1,2));
-    const auto n6 = std::make_shared<Node2D>(Eigen::Matrix<double, 2, 1>(0,0));
+    const auto n5 = std::make_shared<Node2D>(m5);
+    const auto n6 = std::make_shared<Node2D>(m6);
     assert(2 == graph.Edges(n5).size());
     assert(0 == graph.Edges(n6).size());  
   }
 
   { // Test neighbors function
-    const auto n1 = std::make_shared<Node2D>(Eigen::Matrix<double, 2, 1>(1,2));
-    const auto n2 = std::make_shared<Node2D>(Eigen::Matrix<double, 2, 1>(2,2));
+    Eigen::Matrix<double, 2, 1> m1, m2;
+    m1 << 1,2;
+    m2 << 2,2;
+
+    const auto n1 = std::make_shared<Node2D>(m1);
+    const auto n2 = std::make_shared<Node2D>(m2);
     const DirectedEdge2D edge1(n1,n2);
     const Graph2D graph({edge1});
 

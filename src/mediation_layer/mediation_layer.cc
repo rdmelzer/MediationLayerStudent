@@ -33,14 +33,14 @@ namespace game_engine {
 
           TrajectoryVector3D freeze_trajectory_vector;
           for(size_t idx = 0; idx < 100; ++idx) {
-            freeze_trajectory_vector.push_back(Eigen::Matrix<double, 11, 1>(
-                  freeze_quad_position.x(), freeze_quad_position.y(), freeze_quad_position.z(),
-                  0,0,0,
-                  0,0,0,
-                  0,
-                  current_time + idx * 0.01
-                  )
-              );
+            Eigen::Matrix<double, 11, 1> m;
+            m << freeze_quad_position.x(), freeze_quad_position.y(), freeze_quad_position.z(),
+                  0.0,0.0,0.0,
+                  0.0,0.0,0.0,
+                  0.0,
+                  current_time + idx * 0.01;
+            freeze_trajectory_vector.push_back(m);
+        
           }
           const Trajectory freeze_trajectory(freeze_trajectory_vector);
 

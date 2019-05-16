@@ -61,6 +61,7 @@ int main(int argc, char** argv) {
     std::exit(EXIT_FAILURE);
   }
 
+  std::cout << "map_file_path: " << map_file_path << std::endl; 
   const YAML::Node node = YAML::LoadFile(map_file_path);
   const Map3D map = node["map"].as<Map3D>();
 
@@ -164,12 +165,12 @@ int main(int argc, char** argv) {
     quad_state_warden->Register(quad_name);
 
     const Eigen::Vector3d& initial_quad_position = initial_quad_positions[quad_name];
-    quad_state_warden->Write(quad_name, QuadState(Eigen::Matrix<double, 13, 1>(
-          initial_quad_position(0), initial_quad_position(1), initial_quad_position(2),
+    Eigen::Matrix<double, 13, 1> m;
+    m << initial_quad_position(0), initial_quad_position(1), initial_quad_position(2),
           0,0,0,
           1,0,0,0,
-          0,0,0
-          )));
+          0,0,0;
+    quad_state_warden->Write(quad_name, QuadState(m));
   }
 
   // For every quad, subscribe to its corresponding state topic
@@ -190,13 +191,13 @@ int main(int argc, char** argv) {
   for(const auto& kv: quad_state_topics) {
     const std::string& quad_name = kv.first;
     const Eigen::Vector3d& initial_quad_position = initial_quad_positions[quad_name];
-    quad_state_guards[quad_name] 
-      = std::make_shared<QuadStateGuard>(QuadState(Eigen::Matrix<double, 13, 1>(
-          initial_quad_position(0), initial_quad_position(1), initial_quad_position(2),
+    Eigen::Matrix<double, 13, 1> m;
+    m <<  initial_quad_position(0), initial_quad_position(1), initial_quad_position(2),
           0,0,0,
           1,0,0,0,
-          0,0,0
-          )));
+          0,0,0;
+    quad_state_guards[quad_name] 
+      = std::make_shared<QuadStateGuard>(QuadState(m));
   }
 
   // The quad state dispatcher pipes data from the state warden to any state
