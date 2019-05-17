@@ -20,14 +20,98 @@ rules changes, this integration is no longer necessary.
 
 ## Installation
 ### Prerequisites 
-1. [Eigen](https://eigen.tuxfamily.org)
+1. [Eigen](bitbucket.org/eigen/eigen/get/3.3.7.tar.gz)
+
+Download the latest stable release (3.3.7) from the link above. Untar it and move it to your home folder 
+
+```bash
+tar -xvf ~/Downloads/$WHATEVER_THE_EIGEN_TAR_FILENAME_IS
+mv $WHATEVER_THE_EIGEN_FOLDER_IS ~/eigen
+```
+
+Install Eigen
+
+```bash
+cd ~/eigen
+mkdir build
+cd build
+cmake ..
+make install
+```
+
 2. [ROS](http://www.ros.org)
-3. [P4 Requirements](https://github.com/tuckerhaydon/P4.git)
-3. sudo apt install gnuplot
+
+Install ROS Melodic.
+
+```bash
+sudo sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" > /etc/apt/sources.list.d/ros-latest.list'
+
+sudo apt-key adv --keyserver hkp://ha.pool.sks-keyservers.net:80 --recv-key 421C365BD9FF1F717815A3895523BAEEB01FA116
+
+sudo apt update
+
+sudo apt install ros-melodic-desktop-full
+```
+
+Initialize rosdep
+
+```bash
+sudo rosdep init
+rosdep update
+```
+
+Add ROS environment variables to bashrc
+
+```bash
+echo "source /opt/ros/melodic/setup.bash" >> ~/.bashrc
+source ~/.bashrc
+```
+
+Install these ROS dependencies
+
+```bash
+sudo apt install python-rosinstall python-rosinstall-generator python-wstool build-essential
+```
+
+3. Install gnuplot and boost
+
+```bash
+sudo apt install libboost-all-dev gnuplot
+```
+
+4. Install OSQP
+
+```bash
+git clone --recursive https://github.com/oxfordcontrol/osqp
+cd osqp
+mkdir build
+cd build
+cmake -G "Unix Makefiles" ..
+cmake --build . --target install
+```
+
+5. Install [P4](https://github.com/tuckerhaydon/P4.git)
+
+```bash
+git clone https://github.com/tuckerhaydon/P4.git
+cd P4
+mkdir build
+cd build
+cmake ..
+make -j4
+```
+
+Here it might complain that it cant find OSQP. You'll have to set the osqp dir environment variable to the path where the osqp-config.cmake resides before you run cmake. This cmake config file should been in ~/osqp/build/. 
+
+6. Install fftw3
+
+```bash
+ sudo apt-get install libfftw3-dev libfftw3-doc
+```
 
 ### Clone
 ```bash
-git clone https://github.com/tuckerhaydon/MediationLayer.git GameEngine
+git clone https://github.com/rdmelzer/MediationLayerStudent.git GameEngine
 cd GameEngine
 git submodule update --init --recursive
 ```
@@ -43,7 +127,7 @@ make -j4
 ## Running the Mediation Layer
 The ML is comprised of a couple of executables. After building, you must ensure
 that the following programs are running. It may be helpful to use a terminal
-multiplexer like tmux or terminator and start each program in a separate pane.
+multiplexer like tmux or terminator and start each program in a separate pane, or run each process in the backround with &. 
 
 ### ROS Core
 ```bash
@@ -52,8 +136,9 @@ roscore
 
 ### Load ROS params
 ROS params need only be loaded once. This must be run after roscore has been
-started or re-run if any of the parameters have been changed
+started or re-run if any of the parameters have been changed. **Change the paths in the params.yaml to your paths.**
 ```bash
+
 cd GameEngine/run
 rosparam load params.yaml /mediation_layer/
 ```
@@ -90,10 +175,10 @@ cd GameEngine/bin
 ./example_autonomy_protocol
 ```
 
-### Tests
+### Unit Tests
 ```bash
 cd build/test
-./EXECUTABLE_OF_CHOICE
+./{$any_unit_test_executable}
 ```
 
 ## TODO
