@@ -19,8 +19,23 @@ trajectories away from other static and dynamic objects. Since the Machine Games
 rules changes, this integration is no longer necessary.
 
 ## Installation
+
+### Quick Start
+
+Run the following to install the prerequisites, install the simulator, and run an example autonomy protocol. 
+
+```bash
+chmod 744 install_prereqs.sh install.sh run_example.sh
+sudo ./install_prereqs.sh
+source ~/.bashrc
+./install.sh
+./run_example.sh
+```
+
+If the install fails, manual install instructions are below.
+
 ### Prerequisites 
-1. [Eigen](bitbucket.org/eigen/eigen/get/3.3.7.tar.gz)
+[Eigen](bitbucket.org/eigen/eigen/get/3.3.7.tar.gz)
 
 Download the latest stable release (3.3.7) from the link above. Untar it and move it to your home folder 
 
@@ -38,8 +53,6 @@ cd build
 cmake ..
 make install
 ```
-
-2. [ROS](http://www.ros.org)
 
 Install ROS Melodic.
 
@@ -73,13 +86,13 @@ Install these ROS dependencies
 sudo apt install python-rosinstall python-rosinstall-generator python-wstool build-essential
 ```
 
-3. Install gnuplot and boost
+Install gnuplot and boost
 
 ```bash
 sudo apt install libboost-all-dev gnuplot
 ```
 
-4. Install OSQP
+Install OSQP
 
 ```bash
 git clone --recursive https://github.com/oxfordcontrol/osqp
@@ -90,7 +103,7 @@ cmake -G "Unix Makefiles" ..
 cmake --build . --target install
 ```
 
-5. Install [P4](https://github.com/tuckerhaydon/P4.git)
+Install [P4](https://github.com/tuckerhaydon/P4.git)
 
 ```bash
 git clone https://github.com/tuckerhaydon/P4.git
@@ -101,9 +114,13 @@ cmake ..
 make -j4
 ```
 
-Here it might complain that it cant find OSQP. You'll have to set the osqp dir environment variable to the path where the osqp-config.cmake resides before you run cmake. This cmake config file should been in ~/osqp/build/. 
+Here it might complain that it cant find the OSQP cmake config file. You'll have to set the osqp dir environment variable to the path where the osqp-config.cmake resides before you run cmake. This cmake config file should been in ~/osqp/build/ and can be set with. 
 
-6. Install fftw3
+```bash
+export osqp_DIR=~/osqp/build
+```
+
+Install fftw3
 
 ```bash
  sudo apt-get install libfftw3-dev libfftw3-doc
